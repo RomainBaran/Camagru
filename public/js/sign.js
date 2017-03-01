@@ -62,7 +62,7 @@
             "login": login.value,
             "email": email.value,
             "password": password.value,
-            "password_again": password_agai.value
+            "password_again": password_again.value
         }
         if (checkError(errors) === true){
             if ((ajax = ajaxObject()) === null){
