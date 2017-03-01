@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS camagru;
+DROP DATABASE IF EXISTS camagru;
 
 CREATE DATABASE camagru;
 
