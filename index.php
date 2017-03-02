@@ -12,7 +12,7 @@ Autoloader::register();
 
 Router::get('/', function() {
 	if (!isset($_SESSION['username']))
-		header('Location: http://localhost:8080/login');
+		header('Location: http://localhost:80/login');
 	return 'public/view/home.php';
 });
 Router::get('/login', function() {
