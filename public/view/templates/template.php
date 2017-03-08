@@ -8,12 +8,18 @@
 <body>
     <div class="nav-bar">
         <ul>
-            <li><a href="default.asp">Home</a></li>
-            <li><a href="news.asp">News</a></li>
-            <li><a href="contact.asp">Contact</a></li>
-            <li><a href="about.asp">About</a></li>
+            <li><a href="/">Camagru</a></li>
+            <?php if ($_SESSION['username']){ ?> <li><a href="/logout" style="float:right;">Log out</a></li> <?php } ?>
         </ul>
     </div>
+    <p id="message"></p>
+    <?php
+    if ($error !== null || $valid !== null){
+        echo "<div class='{$class}'>";
+        echo ($error !== null) ? $error : $valid;
+        echo "</div>";
+    }
+    ?>
     <div id="content"><?php include($content) ?></div>
 </body>
 </html>

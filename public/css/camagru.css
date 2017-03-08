@@ -18,7 +18,7 @@ body{
 
 .nav-bar > ul > li > a {
     display: inline-block;
-    padding: 10px;
+    padding: 20px;
     text-decoration: none;
     color: white;
 }
@@ -48,13 +48,23 @@ form > input.error{
     border-color: #f00;
 }
 
-p.error{
+#message{
     display: none;
-    color: #f00;
-    text-align: center;
 }
 
-form > button[type=button] {
+.error_display{
+    background-color: #bf7877;
+    color: white;
+    padding: 10px;
+}
+
+.success_display{
+    background-color: #2bd47c;
+    color: white;
+    padding: 10px;
+}
+
+button[type=button] {
     width: 100%;
     background-color: #4CAF50;
     color: white;

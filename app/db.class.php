@@ -3,16 +3,16 @@ namespace App;
 use PDO;
 
 Class Db{
-    private static $database = NULL;
+    private static $_database = NULL;
 
     public static function getDatabase(){
+        require_once $_SERVER['DOCUMENT_ROOT'].'/config/database.php';
         try{
-            if (!$database){
-                $dsn = 'mysql:host=localhost;dbname=camagru';
-                self::$database = new PDO($dsn, 'root', '');
-                self::$database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            if (!$_database){
+                self::$_database = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+                self::$_database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }
-            return self::$database;
+            return self::$_database;
         }catch (PDOException $Exception){
             echo 'Database Connection : '.$e->getMessage().PHP_EOL;
             die();
@@ -21,11 +21,12 @@ Class Db{
 
     public static function closeDatabase(){
         try{
-            self::$database = NULL;
+            if (self::$_database)
+                self::$_database = NULL;
         }catch (PDOException $Exception){
             echo 'Database Connection : '.$e->getMessage().PHP_EOL;
             die();
         }
     }
 }
- ?>
+?>

@@ -21,3 +21,11 @@ function checkError(check){
     }
     return true;
 }
+
+function removeAllClass(elem){
+    let classes = elem.classList;
+
+    classes.forEach(function(element) {
+        elem.classList.remove(element)
+    })
+}

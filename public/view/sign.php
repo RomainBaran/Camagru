@@ -9,8 +9,6 @@
     <input type="text" name="email">
     <button type="button" name="submit">Sign In</button>
 </form>
-<div id="ajax"></div>
-<p class="error">Wrong inputs</p>
 <a href="/login">Log in</a>
 <a href="/forgot" style = "float:right;">Forgot password ?</a>
 <script type="text/javascript" src="/public/js/ajax.js"></script>
