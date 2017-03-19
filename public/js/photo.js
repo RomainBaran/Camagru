@@ -1,7 +1,3 @@
-function delete_photo(elem, elemParent){
-
-}
-
 function createImage(data, delete_button = false){
   let image         = document.createElement("img"),
       top           = document.createElement("div"),
