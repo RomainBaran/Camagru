@@ -1,17 +1,19 @@
 (function() {
-  var streaming = false,
-      video        = document.querySelector('#video'),
-      cover        = document.querySelector('#cover'),
-      canvas       = document.querySelector('#canvas'),
-      photo        = document.querySelector('#photo'),
-      startbutton  = document.querySelector('#startbutton'),
-      width = 320,
-      height = 0;
+  var streaming         = false,
+      video             = document.querySelector('#video'),
+      cover             = document.querySelector('#cover'),
+      canvas            = document.querySelector('#canvas'),
+      startbutton       = document.querySelector('#startbutton'),
+      cancelbutton      = document.querySelector('#cancel'),
+      uploadbutton      = document.querySelector('#upload'),
+      take_photo_block  = document.querySelector("div#firstaction"),
+      canvas_block      = document.querySelector("div#secondaction"),
+      ul_photo          = document.querySelector("ul#photoList"),
+      no_photo          = document.querySelector("p#no_photo"),
+      width             = 320,
+      height            = 0;
 
-  navigator.getMedia = ( navigator.getUserMedia ||
-                         navigator.webkitGetUserMedia ||
-                         navigator.mozGetUserMedia ||
-                         navigator.msGetUserMedia);
+  navigator.getMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
 
   navigator.getMedia(
     {
@@ -32,6 +34,40 @@
     }
   );
 
+  function takepicture() {
+    canvas.width = width;
+    canvas.height = height;
+    canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+    take_photo_block.style.display = "none";
+    canvas_block.style.display = "block";
+  }
+
+
+
+  window.addEventListener('load', function (ev){
+    let photos = document.querySelectorAll(".delete_photo");
+    ev.preventDefault();
+    Array.prototype.forEach.call(photos, function (elem){
+      elem.addEventListener('click', function (ev){
+        let elem = document.querySelector("p#message");
+        let params = {
+          name: this.name
+        }
+        let that = this;
+        request("/delete_photo", params, "POST", function() {
+              message(elem, "Your photo has been deleted", "success_display")
+              that.parentElement.parentElement.remove();
+              if (!document.querySelector("ul#photoList > li")){
+                ul_photo.style.display = "none";
+                no_photo.style.display = "block";
+              }
+        }, function(text) {
+              message(elem, text, "error_display") 
+        })
+      })
+    })
+  })
+
   video.addEventListener('canplay', function(ev){
     if (!streaming) {
       height = video.videoHeight / (video.videoWidth/width);
@@ -43,17 +79,36 @@
     }
   }, false);
 
-  function takepicture() {
-    canvas.width = width;
-    canvas.height = height;
-    canvas.getContext('2d').drawImage(video, 0, 0, width, height);
-    var data = canvas.toDataURL('image/jpeg', 1);
-    photo.setAttribute('src', data);
-  }
-
   startbutton.addEventListener('click', function(ev){
-      takepicture();
+    takepicture();
     ev.preventDefault();
+  }, false);
+
+  cancelbutton.addEventListener('click', function(ev){
+    canvas_block.style.display = "none";
+    take_photo_block.style.display = "block";
+  }, false);
+
+
+  uploadbutton.addEventListener('click', function(ev){
+    let li        = document.createElement("li"),
+        elem      = document.querySelector("p#message"),
+        params    = {
+          "data": canvas.toDataURL('image/jpeg', 1)
+        };
+    request("/upload", params, "POST", function() {
+        message(elem, "Your photo has been uploaded", "success_display")
+        createImage(params.data, true).forEach((elem) => li.appendChild(elem))
+        ul_photo.appendChild(li)
+        if (no_photo){
+          no_photo.style.display = "none";
+          ul_photo.style.display = "block";
+        }
+    }, function(text) {
+        message(elem, text, "error_display") 
+    })
+    canvas_block.style.display = "none";
+    take_photo_block.style.display = "block";
   }, false);
 
 })();

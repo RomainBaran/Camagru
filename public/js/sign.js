@@ -5,16 +5,16 @@
     var password_again = document.getElementsByName("password_again")[0];
     var submit = document.getElementsByName("submit")[0];
     login.addEventListener("click", function(e){
-        removeError(this);
+        this.classList.remove("error")
     });
     email.addEventListener("click", function(e){
-        removeError(this);
+        this.classList.remove("error")
     });
     password.addEventListener("click", function(e){
-        removeError(this);
+        this.classList.remove("error")
     });
     password_again.addEventListener("click", function(e){
-        removeError(this);
+        this.classList.remove("error")
     });
     login.addEventListener("blur", function(e){
         let errors = {
@@ -57,17 +57,9 @@
             "password_again": password_again.value
         }
         if (!request("/sign", params, "POST", function() {
-            elem.style.display = "none";
-            removeAllClass(elem);
-            elem.innerHTML = "An email as been sent";
-            elem.classList.add("success_display");
-            elem.style.display = "block";
+            message(elem, "An email as been sent", "success_display")
         }, function(text) {
-            elem.style.display = "none";
-            removeAllClass(elem);
-            elem.innerHTML = text;
-            elem.classList.add("error_display");
-            elem.style.display = "block";
+            message(elem, text, "error_display")
         }))
         return;
     });

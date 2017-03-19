@@ -3,10 +3,10 @@
     var password = document.getElementsByName("password")[0];
     var submit = document.getElementsByName("submit")[0];
     login.addEventListener("click", function(e){
-        removeError(this);
+        this.classList.remove("error")
     });
     password.addEventListener("click", function(e){
-        removeError(this);
+        this.classList.remove("error")
     });
     login.addEventListener("blur", function(e){
         let errors = {
@@ -33,11 +33,7 @@
         request("/login", params, "POST", function() {
             window.location.replace("/");
         }, function(text) {
-            elem.style.display = "none";
-            removeAllClass(elem);
-            elem.innerHTML = text;
-            elem.classList.add("error_display");
-            elem.style.display = "block";
+            message(elem, text, "error_display")
         })
     });
 })();

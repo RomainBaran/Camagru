@@ -1,8 +1,3 @@
-function removeError(elem){
-    if (elem.classList.contains("error") === true)
-        elem.classList.remove("error")
-}
-
 function checkError(check){
     if (((typeof check !== "object" || check === null)
         || ("tests" in check) === false)

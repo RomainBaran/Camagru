@@ -1,6 +1,19 @@
 body{
     background-color:#171a21;
     width:100%;
+    margin:0;
+}
+
+ul#photoList::-webkit-scrollbar {
+    width: 2em;
+}
+ 
+ul#photoList::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+ul#photoList::-webkit-scrollbar-thumb {
+  background-color: #4CAF50;
 }
 
 .nav-bar > ul {
@@ -76,10 +89,64 @@ button[type=button] {
     font-size: 14px;
 }
 
-form > button[type=submit]:hover {
+button.button_error{
+    background-color: #bf7877;
+}
+
+button[type=submit]:hover {
     background-color: #45a049;
 }
 
 form > label{
     color: white;
+}
+
+ul#photoList{
+    padding:0;
+    width: 100%;
+    overflow: auto;
+    white-space: nowrap;
+    display:block;
+}
+
+ul#photoList > li{
+    display: inline-block;
+    position: relative;
+}
+
+ul#photoList > li:hover > .photo{
+    opacity: 0.3;
+}
+
+ul#photoList > li:hover > .top{
+    opacity: 1;
+}
+
+ul#photoList > li:hover > .bottom{
+    opacity: 1;
+}
+
+ul#photoList > li > .photo{
+    height: 130px;
+    padding:1em;
+    display:block;
+    opacity: 1;
+    transition: .5s ease;
+}
+
+ul#photoList > li > .top, .bottom {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%)
+}
+
+ul#photoList > li > .top {
+  top: 30%;
+}
+
+ul#photoList > li > .bottom {
+  top: 70%;
 }

@@ -41,10 +41,10 @@ Class Router{
         $explode = explode("/", $request["uri"]);
         foreach (self::$paths as $route){
             $explode_route = explode("/", $route['path']);
-            if (count($explode) !== count($explode_route))
+            if (!$explode_route || count($explode) !== count($explode_route))
                 continue;
             for($i = 0; $i < count($explode_route); $i++){
-                if ($explode_route[$i][0] == ':'){
+                if ($explode_route[$i] && $explode_route[$i][0] == ':'){
                     $return["handler"] = $route['handler'];
                     $return["params"][substr($explode_route[$i], 1)] = $explode[$i];
                 }

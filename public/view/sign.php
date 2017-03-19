@@ -12,5 +12,6 @@
 <a href="/login">Log in</a>
 <a href="/forgot" style = "float:right;">Forgot password ?</a>
 <script type="text/javascript" src="/public/js/ajax.js"></script>
+<script type="text/javascript" src="/public/js/message.js"></script>
 <script type="text/javascript" src="/public/js/form.js"></script>
 <script type="text/javascript" src="/public/js/sign.js"></script>

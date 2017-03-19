@@ -27,9 +27,9 @@ function request(uri, params, method, success = null, error = null){
 
     if (!(requestObject = getHttp())
         || (params && !(data = form(params)))){
-        if (typeof error === "function")
-            error();
-        return null;
+            if (typeof error === "function")
+                error();
+            return null;
     }
     requestObject.onreadystatechange = function() {
 	    if (requestObject.readyState == 4){
