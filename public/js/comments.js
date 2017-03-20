@@ -1,7 +1,9 @@
 (function(){
   var content             = document.querySelector("#comments"),
       elem                = document.querySelector("p#message"),
-      commentsCollection  = null;
+      last_timestamp      = 0,
+      path                = window.location.pathname.substr(1).split("/"),
+      comment_box         = document.querySelector("#comment");
 
   function createComment(elem, you){
     let div     = document.createElement("div"),
@@ -20,23 +22,23 @@
   }
 
   function success(text = null){
+    let comments_buff = null;
     let comments = JSON.parse(text),
         you = comments.you;
     for (var key in comments){
-      if (key !== "you" && (!commentsCollection || !(key in commentsCollection))){
-        if (!commentsCollection)
-          commentsCollection = new Object();
-        commentsCollection[key] = comments[key]
+      if (key !== "you"){
+        comments_buff = comments[key]
         createComment(comments[key], you)
       }
     }
+    if (comments_buff)
+      last_timestamp = comments_buff["date"]
   }
 
   window.addEventListener("load", function(ev){
-    let explode_path = window.location.pathname.substr(1).split("/")
-    if (typeof explode_path !== "object" || explode_path.length !== 2)
+    if (typeof path !== "object" || path.length !== 2)
       return ;
-    request("/comments", {name: explode_path[1]}, "POST", success,
+    request("/comments", {name: path[1], timestamp: last_timestamp}, "POST", success,
       function(text){
         message(elem, text, "error_display")
       },
@@ -49,22 +51,27 @@
         return true;
       })
   })
-  document.querySelector("send").addEventListener("click", function(ev){
-    let explode_path = window.location.pathname.substr(1).split("/")
-    if (typeof explode_path !== "object" || explode_path.length !== 2)
+  document.querySelector("#send").addEventListener("click", function(ev){
+    if (typeof path !== "object" || path.length !== 2)
       return ;
-    request("/comments", {name: explode_path[1]}, "POST", success,
-      function(text){
-        message(elem, text, "error_display")
-      },
-      function (test){
-        try{
-          JSON.parse(test)
-        } catch (e){
-          return false;
-        }
-        return true;
-      })
-  })
 
+    request("/upload_comment", {content: comment_box.value, name: path[1]}, "POST",
+      function(text = null){
+        message(elem, "Your comment has been sent", "success_display");
+        request("/comments", {name: path[1], timestamp: last_timestamp}, "POST", success,
+          function(text){
+            message(elem, text, "error_display")
+          },
+          function (test){
+            try{
+              JSON.parse(test)
+            } catch (e){
+              return false;
+            }
+            return true;
+          });
+      },  function (text){
+        message(elem, text, "error_display")
+      })
+    })
 })();

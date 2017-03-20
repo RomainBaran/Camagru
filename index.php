@@ -86,7 +86,24 @@ Router::post('/comments', function() {
 	}
 	header('Content-Type: application/json');
 	$comments = new Comment($db);
-	echo $comments->selectAll($image[0]["id"]);
+	echo $comments->selectAll($image[0]["id"], $_POST["timestamp"]);
+});
+Router::post('/upload_comment', function() {
+	if (!isset($_SESSION['username'])){
+		echo 'Not logged in';
+		return ;
+	}
+	if (!($db = Db::getDatabase())){
+		echo 'Server Error';
+		return ;
+	}
+	$image = new Image($db);
+	if (($image = $image->selectAll(0, $_POST["name"])) === null){
+		echo 'Server Error';
+		return ;
+	}
+	$comments = new Comment($db);
+	echo $comments->insert($image[0]["id"], $_SESSION["id"], $_POST["content"]);
 });
 
 
