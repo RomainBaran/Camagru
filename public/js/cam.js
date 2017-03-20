@@ -42,29 +42,29 @@
     canvas_block.style.display = "block";
   }
 
-
+function deletepicture(){
+  let elem = document.querySelector("p#message");
+  let params = {
+    name: this.name
+  }
+  let that = this;
+  request("/delete_photo", params, "POST", function(text = null) {
+        message(elem, "Your photo has been deleted", "success_display")
+        that.parentElement.parentElement.remove();
+        if (!document.querySelector("ul#photoList > li")){
+          ul_photo.style.display = "none";
+          no_photo.style.display = "block";
+        }
+  }, function(text) {
+        message(elem, text, "error_display")
+  })
+}
 
   window.addEventListener('load', function (ev){
     let photos = document.querySelectorAll(".delete_photo");
     ev.preventDefault();
     Array.prototype.forEach.call(photos, function (elem){
-      elem.addEventListener('click', function (ev){
-        let elem = document.querySelector("p#message");
-        let params = {
-          name: this.name
-        }
-        let that = this;
-        request("/delete_photo", params, "POST", function() {
-              message(elem, "Your photo has been deleted", "success_display")
-              that.parentElement.parentElement.remove();
-              if (!document.querySelector("ul#photoList > li")){
-                ul_photo.style.display = "none";
-                no_photo.style.display = "block";
-              }
-        }, function(text) {
-              message(elem, text, "error_display") 
-        })
-      })
+      elem.addEventListener('click', deletepicture)
     })
   })
 
@@ -96,17 +96,17 @@
         params    = {
           "data": canvas.toDataURL('image/jpeg', 1)
         };
-    request("/upload", params, "POST", function() {
+    request("/upload", params, "POST", function(text = null) {
         message(elem, "Your photo has been uploaded", "success_display")
-        createImage(params.data, true).forEach((elem) => li.appendChild(elem))
+        createImage(text, deletepicture).forEach((elem) => li.appendChild(elem))
         ul_photo.appendChild(li)
         if (no_photo){
           no_photo.style.display = "none";
           ul_photo.style.display = "block";
         }
     }, function(text) {
-        message(elem, text, "error_display") 
-    })
+        message(elem, text, "error_display")
+    }, /\d+_\w+/.test.bind(/\d+_\w+/))
     canvas_block.style.display = "none";
     take_photo_block.style.display = "block";
   }, false);

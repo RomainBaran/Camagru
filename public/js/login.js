@@ -30,7 +30,7 @@
             "login": login.value,
             "password": password.value,
         }
-        request("/login", params, "POST", function() {
+        request("/login", params, "POST", function(text = null) {
             window.location.replace("/");
         }, function(text) {
             message(elem, text, "error_display")

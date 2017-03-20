@@ -16,7 +16,7 @@ Class Image{
         $name = time().'_'.uniqid();
         if ((count($array) !== 2 && ($error = "Wrong file upload"))
             || ($array[0] !== "data:image/jpeg;base64" && ($error = "Wrong file upload"))
-            || (($data = base64_decode($array[1])) === false && ($error = "Server error"))
+            || (($data = base64_decode($array[1])) === false && ($error = "Wrong file upload"))
             || ((file_put_contents('./public/upload/'.$name.'.jpeg', $data)) === false && ($error = "Server error")))
             return $error;
         try {
@@ -25,18 +25,24 @@ Class Image{
             $statement->bindParam(":id_user", $_SESSION['id']);
             if ($statement->execute() === false && $error = "Server error")
                 return $error;
+            return $name;
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
-        return 'true';
+        return 'Server error';
     }
 
-    public function selectAll($id = 0){
+    public function selectAll($id = 0, $name = null){
+        if ($name && !preg_match("/\d+_\w+/", $name))
+          return null;
         $sql = $id ? "select * from PHOTO where id_user = :id" : "select * from PHOTO";
+        $sql = $name ? "select * from PHOTO where name = :name" : $sql;
         try{
             $statement = $this->db->prepare($sql);
             if ($id)
                 $statement->bindParam(":id", $id);
+            if ($name)
+                $statement->bindParam(":name", $name);
             $statement->execute();
             return $statement->fetchAll();
         } catch(PDOException $e) {

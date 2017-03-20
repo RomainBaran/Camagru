@@ -21,7 +21,7 @@ function form(params){
     return data;
 }
 
-function request(uri, params, method, success = null, error = null){
+function request(uri, params, method, success = null, error = null, test = null){
     let requestObject;
     let data = null;
 
@@ -34,8 +34,10 @@ function request(uri, params, method, success = null, error = null){
     requestObject.onreadystatechange = function() {
 	    if (requestObject.readyState == 4){
             if (requestObject.status == 200){
-                if (requestObject.responseText === "true" && typeof success === "function")
-                    success();
+                if ((requestObject.responseText === "true"
+                      || (typeof test === "function" && test(requestObject.responseText)))
+                    && typeof success === "function")
+                    success(requestObject.responseText);
                 else if (typeof error === "function")
                     error(requestObject.responseText)
             }

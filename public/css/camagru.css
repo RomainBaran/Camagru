@@ -4,15 +4,19 @@ body{
     margin:0;
 }
 
-ul#photoList::-webkit-scrollbar {
+.scrollbar::-webkit-scrollbar {
     width: 2em;
 }
- 
-ul#photoList::-webkit-scrollbar-track {
+
+.scrollbar-min::-webkit-scrollbar {
+    width: 1em;
+}
+
+.scrollbar::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
- 
-ul#photoList::-webkit-scrollbar-thumb {
+
+.scrollbar::-webkit-scrollbar-thumb {
   background-color: #4CAF50;
 }
 
@@ -47,7 +51,7 @@ div#content {
     padding: 25px;
 }
 
-form > input ,select {
+form > input ,select, textarea {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -55,6 +59,11 @@ form > input ,select {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+}
+
+form > textarea{
+  min-height: 14px;
+  overflow: hidden;
 }
 
 form > input.error{
@@ -149,4 +158,33 @@ ul#photoList > li > .top {
 
 ul#photoList > li > .bottom {
   top: 70%;
+}
+
+div#comments{
+  text-align: right;
+  color: orange;
+  margin:10px 0px;
+  height:150px;
+  overflow-y: scroll;
+
+}
+
+div#comments > div{
+  margin: 10px;
+}
+
+div#comments .you{
+  text-align: left;
+  color: cyan;
+}
+
+div#comments label, p{
+  margin:0;
+  padding:0;
+}
+
+div#comments label{
+  font-size: 14px;
+  font-style: italic;
+  font-weight: bold;
 }

@@ -56,7 +56,7 @@
             "password": password.value,
             "password_again": password_again.value
         }
-        if (!request("/sign", params, "POST", function() {
+        if (!request("/sign", params, "POST", function(text = null) {
             message(elem, "An email as been sent", "success_display")
         }, function(text) {
             message(elem, text, "error_display")

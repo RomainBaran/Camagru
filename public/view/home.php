@@ -8,7 +8,7 @@
     <button id="upload" type="button" style="width:50%;">Upload a picture</button>
 </div>
 <h3 style="Width:100%;color:white;">Your Pictures</h3>
-<ul id="photoList" <?php if (!$photos) echo "style='display: none;'" ?> >
+<ul id="photoList" class="scrollbar" <?php if (!$photos) echo "style='display: none;'" ?> >
 <?php
 	if ($photos){
 		foreach($photos as $photo){
@@ -24,7 +24,7 @@
 	}
 ?>
 </ul>
-<?php 
+<?php
 	if (!$photos)
 		echo "<p id='no_photo' style='width:100%;color:white;'>You haven't got any pictures yet</p>";
     else
