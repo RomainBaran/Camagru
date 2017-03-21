@@ -32,15 +32,21 @@ Class Image{
         return 'Server error';
     }
 
-    public function selectAll($id = 0, $name = null){
-        if ($name && !preg_match("/\d+_\w+/", $name))
+    public function selectAll($id_user = 0, $name = null){
+        if ($name && !preg_match("/^\d+_\w+$/", $name))
           return null;
-        $sql = $id ? "select * from PHOTO where id_user = :id" : "select * from PHOTO";
-        $sql = $name ? "select * from PHOTO where name = :name" : $sql;
+        $sql = "select * from PHOTO";
+        if ($id_user && $name)
+          $sql .= " where id_user = :id and name = :name";
+        else if ($id_user)
+          $sql .= " where id_user = :id";
+        else if ($name)
+          $sql .= " where name = :name";
+        $sql .= ";";
         try{
             $statement = $this->db->prepare($sql);
-            if ($id)
-                $statement->bindParam(":id", $id);
+            if ($id_user)
+                $statement->bindParam(":id", $id_user);
             if ($name)
                 $statement->bindParam(":name", $name);
             $statement->execute();

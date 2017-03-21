@@ -48,15 +48,19 @@ function deletepicture(){
     name: this.name
   }
   let that = this;
-  request("/delete_photo", params, "POST", function(text = null) {
-        message(elem, "Your photo has been deleted", "success_display")
-        that.parentElement.parentElement.remove();
-        if (!document.querySelector("ul#photoList > li")){
-          ul_photo.style.display = "none";
-          no_photo.style.display = "block";
-        }
-  }, function(text) {
-        message(elem, text, "error_display")
+  request("/delete_comments", {name: that.name.replace(".jpeg", "")}, "POST", function (text = null) {
+    request("/delete_photo", params, "POST", function(text = null) {
+          message(elem, "Your photo has been deleted", "success_display")
+          that.parentElement.parentElement.remove();
+          if (!document.querySelector("ul#photoList > li")){
+            ul_photo.style.display = "none";
+            no_photo.style.display = "block";
+          }
+    }, function(text) {
+          message(elem, text, "error_display")
+    })
+  }, function (text){
+    message(elem, text, "error_display")
   })
 }
 

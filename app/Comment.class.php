@@ -49,5 +49,20 @@ Class Comment{
       }
       return "Server Errror";
     }
+
+    public function delete($id_photo){
+        if (!$id_photo)
+          return "Server Error";
+        $sql = "delete from COMMENTS where id_photo=:id";
+        try{
+          $statement = $this->db->prepare($sql);
+          $statement->bindParam(":id", $id_photo);
+          if ($statement->execute())
+            return "true";
+        } catch (PDOException $e){
+          echo $e->getMessage();
+        }
+        return "Server Error";
+    }
 }
 ?>

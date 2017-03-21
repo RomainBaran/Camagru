@@ -70,6 +70,25 @@ Router::post('/delete_photo', function() {
 	$image = new Image($db);
 	echo $image->delete($_POST["name"], $_SESSION["id"]);
 });
+Router::post('/delete_comments', function() {
+	if (!isset($_SESSION['username'])){
+		echo 'Not logged in';
+		return ;
+	}
+	if (!($db = Db::getDatabase())){
+		echo 'Server Error';
+		return ;
+	}
+	$image = new Image($db);
+	$comment = new Comment($db);
+	$image = $image->selectAll($_SESSION["id"], $_POST["name"]);
+	if (!$image){
+		echo "Permission denied";
+		return ;
+	}
+	echo $comment->delete($image[0]["id"]);
+});
+
 Router::post('/comments', function() {
 	if (!isset($_SESSION['username'])){
 		echo 'Not logged in';
@@ -104,6 +123,23 @@ Router::post('/upload_comment', function() {
 	}
 	$comments = new Comment($db);
 	echo $comments->insert($image[0]["id"], $_SESSION["id"], $_POST["content"]);
+});
+Router::post('/gallery', function() {
+	if (!isset($_SESSION['username'])){
+		echo 'Not logged in';
+		return ;
+	}
+	if (!($db = Db::getDatabase())){
+		echo 'Server Error';
+		return ;
+	}
+	$image = new Image($db);
+	if (($image = $image->selectAll()) === null){
+		echo 'Server Error';
+		return ;
+	}
+	header('Content-Type: application/json');
+	echo json_encode($image);
 });
 
 
@@ -147,14 +183,20 @@ Router::get('/sign/:rand', function($params) {
 });
 Router::get('/forgot', function() {
 	if (isset($_SESSION['username']))
-		header('Location: http://localhost:8080/');
+		header('Location: http://localhost:'.$SERVER_PORT.'/');
 	$content = 'public/view/forgot.php';
 	include('public/view/templates/template.php');
 });
 Router::get('/comment/:name', function($params) {
 	if (!isset($_SESSION['username']))
-		header('Location: http://localhost:8080/login');
+		header('Location: http://localhost:'.$SERVER_PORT.'/login');
 	$content = 'public/view/comment.php';
+	include('public/view/templates/template.php');
+});
+Router::get('/gallery', function() {
+	if (!isset($_SESSION['username']))
+		header('Location: http://localhost:'.$SERVER_PORT.'/login');
+	$content = 'public/view/gallery.php';
 	include('public/view/templates/template.php');
 });
 Db::closeDatabase();
