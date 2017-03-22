@@ -188,3 +188,16 @@ div#comments label{
   font-style: italic;
   font-weight: bold;
 }
+.paginator{
+    text-align: center;
+}
+
+.paginator > .active{
+    background-color: #00babc;
+}
+
+.paginator > .separator{
+    pointer-events: visible;
+    cursor: no-drop;
+    background-color: #bf7877;
+}

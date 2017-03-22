@@ -1,6 +1,7 @@
-<div id="paginator_target"><div>
-<div id="paginator"></div>
+<ul id="photoList" class="paginator_target gallery" style="white-space: normal; overflow:hidden"></ul>
+<div class="paginator"></div>
 <script type="text/javascript" src="/public/js/message.js"></script>
+<script type="text/javascript" src="/public/js/photo.js"></script>
 <script type="text/javascript" src="/public/js/form.js"></script>
 <script type="text/javascript" src="/public/js/ajax.js"></script>
 <script type="text/javascript" src="/public/js/paginator.js"></script>

@@ -35,4 +35,4 @@
 <script type="text/javascript" src="/public/js/form.js"></script>
 <script type="text/javascript" src="/public/js/ajax.js"></script>
 <script type="text/javascript" src="/public/js/photo.js"></script>
-<script type="text/javascript" src="/public/js/cam.js"></script>
+<script type="text/javascript" src="/public/js/main.js"></script>

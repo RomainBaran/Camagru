@@ -9,8 +9,6 @@ use App\Comment;
 
 session_start();
 
-require 'config/config.php';
-
 //Set the autoloader
 require 'app/autoloader.class.php';
 Autoloader::register();
@@ -44,7 +42,7 @@ Router::get('/logout', function() {
 		$user = new User(null);
 		$user->logout();
 	}
-	header('Location: http://localhost:'.$SERVER_PORT.'/login');
+	header('Location: http://localhost:8080/login');
 });
 Router::post('/upload', function() {
 	if (!isset($_SESSION['username'])){
@@ -146,7 +144,7 @@ Router::post('/gallery', function() {
 //views
 Router::get('/', function() {
 	if (!isset($_SESSION['username']))
-		header('Location: http://localhost:'.$SERVER_PORT.'/login');
+		header('Location: http://localhost:8080/login');
 	if (!($db = Db::getDatabase())){
 		echo 'Server Error';
 		return ;
@@ -159,19 +157,19 @@ Router::get('/', function() {
 });
 Router::get('/login', function() {
 	if (isset($_SESSION['username']))
-		header('Location: http://localhost:'.$SERVER_PORT.'/');
+		header('Location: http://localhost:8080/');
 	$content = 'public/view/login.php';
 	include('public/view/templates/template.php');
 });
 Router::get('/sign', function() {
 	if (isset($_SESSION['username']))
-		header('Location: http://localhost:'.$SERVER_PORT.'/');
+		header('Location: http://localhost:8080/');
 	$content = 'public/view/sign.php';
 	include('public/view/templates/template.php');
 });
 Router::get('/sign/:rand', function($params) {
 	if (isset($_SESSION['username']))
-		header('Location: http://localhost:'.$SERVER_PORT.'/');
+		header('Location: http://localhost:8080/');
 	$db = Db::getDatabase();
 	$user = new user($db);
 	$return = $user->verify($params["rand"]);
@@ -183,19 +181,19 @@ Router::get('/sign/:rand', function($params) {
 });
 Router::get('/forgot', function() {
 	if (isset($_SESSION['username']))
-		header('Location: http://localhost:'.$SERVER_PORT.'/');
+		header('Location: http://localhost:8080/');
 	$content = 'public/view/forgot.php';
 	include('public/view/templates/template.php');
 });
 Router::get('/comment/:name', function($params) {
 	if (!isset($_SESSION['username']))
-		header('Location: http://localhost:'.$SERVER_PORT.'/login');
+		header('Location: http://localhost:8080/login');
 	$content = 'public/view/comment.php';
 	include('public/view/templates/template.php');
 });
 Router::get('/gallery', function() {
 	if (!isset($_SESSION['username']))
-		header('Location: http://localhost:'.$SERVER_PORT.'/login');
+		header('Location: http://localhost:8080/login');
 	$content = 'public/view/gallery.php';
 	include('public/view/templates/template.php');
 });

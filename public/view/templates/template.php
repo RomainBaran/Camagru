@@ -10,6 +10,7 @@
         <ul>
             <li><a href="/">Camagru</a></li>
             <?php if ($_SESSION['username']){ ?> <li><a href="/logout" style="float:right;">Log out</a></li> <?php } ?>
+            <?php if ($_SESSION['username']){ ?> <li><a href="/gallery" style="float:right;">Gallery</a></li> <?php } ?>
         </ul>
     </div>
     <p id="message"></p>
