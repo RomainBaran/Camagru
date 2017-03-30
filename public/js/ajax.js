@@ -15,6 +15,9 @@ function form(params){
     if (params && typeof params === "object"){
         data = new FormData();
         for (var k in params){
+          if (typeof params[k] === "object")
+            data.append(k, JSON.stringify(params[k]))
+          else
             data.append(k, params[k]);
         }
     }

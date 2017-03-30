@@ -15,9 +15,9 @@
 
   pagination.path = "/gallery";
   pagination.requestObject = getHttp();
-  pagination.elem_by_pages = 12;
+  pagination.elem_by_pages = 1;
   pagination.method = "POST";
-  pagination.button = {type:"button", style:"width:auto; margin:0px 2px;"};
+  pagination.button = {type:"button", style:"width:auto; margin:0px 2px; padding:10px 12px"};
   pagination.offset_max = 2;
   pagination.offset_min = 2;
   pagination.show = function(data, begin){

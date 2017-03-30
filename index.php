@@ -6,6 +6,7 @@ use App\App;
 use App\Db;
 use App\Image;
 use App\Comment;
+use App\Like;
 
 session_start();
 
@@ -53,6 +54,35 @@ Router::post('/upload', function() {
 		echo 'Server Error';
 		return ;
 	}
+	if (!is_writable('./public/upload/')){
+		echo "Permission denied";
+		return ;
+	}
+	if (!$_POST["data"] || !$_POST["filter"]){
+		echo "Wrong data sent";
+		return ;
+	}
+	$_POST["filter"] = json_decode($_POST["filter"]);
+	$image = new Image($db);
+	echo $image->upload($_POST);
+});
+Router::post('/upload_file', function() {
+	if (!isset($_SESSION['username'])){
+		echo 'Not logged in';
+		return ;
+	}
+	if (!($db = Db::getDatabase())){
+		echo 'Server Error';
+		return ;
+	}
+	if (!is_writable('./public/upload/')){
+		echo "Permission denied";
+		return ;
+	}
+	if (!$_POST["data"]){
+		echo "Wrong data sent";
+		return ;
+	}
 	$image = new Image($db);
 	echo $image->upload($_POST);
 });
@@ -63,6 +93,10 @@ Router::post('/delete_photo', function() {
 	}
 	if (!($db = Db::getDatabase())){
 		echo 'Server Error';
+		return ;
+	}
+	if (!is_writable('./public/upload/') || !is_writable('./public/upload/'.$_POST["name"])){
+		echo "Permission denied";
 		return ;
 	}
 	$image = new Image($db);
@@ -80,13 +114,12 @@ Router::post('/delete_comments', function() {
 	$image = new Image($db);
 	$comment = new Comment($db);
 	$image = $image->selectAll($_SESSION["id"], $_POST["name"]);
-	if (!$image){
+	if (!$image || !is_writable('./public/upload/') || !is_writable('./public/upload/'.$_POST["name"].".png")){
 		echo "Permission denied";
 		return ;
 	}
 	echo $comment->delete($image[0]["id"]);
 });
-
 Router::post('/comments', function() {
 	if (!isset($_SESSION['username'])){
 		echo 'Not logged in';
@@ -138,6 +171,49 @@ Router::post('/gallery', function() {
 	}
 	header('Content-Type: application/json');
 	echo json_encode($image);
+});
+Router::post('/likes', function(){
+	if (!isset($_SESSION['username'])){
+		echo 'Not logged in';
+		return ;
+	}
+	if (!($db = Db::getDatabase())){
+		echo 'Server Error';
+		return ;
+	}
+	$image = new Image($db);
+	if (($image = $image->selectAll(0, $_POST["name"])) === null){
+		echo 'Server Error';
+		return ;
+	}
+	$like = new Like($db);
+	header('Content-Type: application/json');
+	echo $like->selectAll($image[0]["id"]);
+});
+Router::post('/like', function(){
+	if (!isset($_SESSION['username'])){
+		echo 'Not logged in';
+		return ;
+	}
+	if (!($db = Db::getDatabase())){
+		echo 'Server Error';
+		return ;
+	}
+	$image = new Image($db);
+	if (($image = $image->selectAll(0, $_POST["name"])) === null){
+		echo 'Server Error';
+		return ;
+	}
+	$like = new Like($db);
+	$tab = json_decode($like->selectAll($image[0]["id"], $_SESSION["id"]));
+	if ((count((array)$tab) - 1) > 0){
+		if ($like->delete($image[0]["id"], $_SESSION["id"]) === "true")
+			echo "You have disliked this picture";
+	}
+	else{
+		if ($like->insert($image[0]["id"], $_SESSION["id"]) === "true")
+			echo "You have liked this picture";
+	}
 });
 
 

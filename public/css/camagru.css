@@ -2,6 +2,8 @@ body{
     background-color:#171a21;
     width:100%;
     margin:0;
+    color: white;
+    font-family: sans-serif;
 }
 
 .scrollbar::-webkit-scrollbar {
@@ -110,7 +112,23 @@ form > label{
     color: white;
 }
 
-ul#photoList{
+#filters .active{
+  background-color: #00babc;
+}
+
+#video_container{
+  display: inline-block;
+  position: relative;
+}
+
+.filter{
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  z-index: 1;
+}
+
+ul.photoList{
     padding:0;
     width: 100%;
     overflow: auto;
@@ -118,7 +136,7 @@ ul#photoList{
     display:block;
 }
 
-ul#photoList > li{
+ul.photoList > li{
     display: inline-block;
     position: relative;
 }
@@ -135,19 +153,24 @@ ul#photoList > li:hover > .bottom{
     opacity: 1;
 }
 
-ul#photoList > li > .photo{
+ul.photoList > li > .photo{
     height: 130px;
-    padding:1em;
+    margin:0 1em 0 0;
     display:block;
     opacity: 1;
     transition: .5s ease;
+}
+
+ul.photoList > li:last-child > .photo{
+    margin:0;
 }
 
 ul#photoList > li > .top, .bottom {
   transition: .5s ease;
   opacity: 0;
   position: absolute;
-  left: 50%;
+  left: 85px;
+  width: 70%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%)
 }
@@ -192,7 +215,7 @@ div#comments label{
     text-align: center;
 }
 
-.paginator > .active{
+#firstaction > .active, .paginator > .active{
     background-color: #00babc;
 }
 
